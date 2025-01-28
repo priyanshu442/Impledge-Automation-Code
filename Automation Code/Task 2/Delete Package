@@ -1,0 +1,45 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+
+# Configuration
+BASE_URL = "https://ecspro-qa.kloudship.com"
+USER_EMAIL = "kloudship.qa.automation@mailinator.com"
+USER_PASSWORD = "Password1"
+
+
+def delete_package_test():
+# Setup WebDriver
+browser = webdriver.Chrome()
+browser.maximize_window()
+
+
+try:
+# Step 01: Login
+browser.get(BASE_URL)
+browser.find_element(By.ID, "username").send_keys(USER_EMAIL)
+browser.find_element(By.ID, "password").send_keys(USER_PASSWORD)
+browser.find_element(By.ID, "login-button").click()
+time.sleep(2)
+
+
+# Step 02: Navigate to Package Types
+browser.find_element(By.LINK_TEXT, "Package Types").click()
+time.sleep(2)
+
+
+# Step 03: Delete the newly added package
+# Assuming there's a delete button/link corresponding to the package (adjust selectors accordingly)
+package_name = "Test_User" # Ensure this matches the name from Test Case 01
+rows = browser.find_elements(By.XPATH, "//table[@id='package-table']//tr") # Adjust table ID as per actual HTML
+
+
+package_found = False
+for row in rows:
+if package_name in row.text:
+package_found = True
+
+
+
+Powered by

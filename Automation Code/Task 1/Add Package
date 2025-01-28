@@ -1,0 +1,52 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+import random
+import time
+
+#Configuration 
+BASE_URL = "https://ecspro-qa.kloudship.com"
+USER_EMAIL = "kloudship.qa.automation@mailinator.com"
+USER_PASSWORD = "Password1"
+
+def execute_add_package_test():
+    # Settup the Webdriver
+    browser = webdriver.Chrome()  # Ensure appropriate WebDriver is installed
+    browser.maximize_window()
+
+    try:
+        #The Login Process
+        browser.get(BASE_URL)
+        browser.find_element(By.ID, "username").send_keys(USER_EMAIL)
+        browser.find_element(By.ID, "password").send_keys(USER_PASSWORD)
+        browser.find_element(By.ID, "login-button").click()
+        time.sleep(2)  # Allow page to load
+
+        # Navigate to Package Types
+        browser.find_element(By.LINK_TEXT, "Package Types").click()
+        time.sleep(1)
+
+        # Add a Package
+        browser.find_element(By.ID, "add-manually-btn").click()
+        time.sleep(1)
+        package_name = "Test_User"
+        package_dimension = random.randint(1,20)
+        browser.find_element(By.ID, "package-name").send_keys(package_name)
+        browser.find_element(By.ID, "package-dimensions").send_keys(package_dimension)
+        browser.find_element(By.ID, "save-package-btn").click()
+        time.sleep(2)
+
+        #Logout 
+        browser.find_element(By.ID,"logout-btn").click()
+        time.sleep(1)
+
+        #Re-login to verify
+        browser.get(BASE_URL)
+        browser.find_element(By.ID,"username").send_keys(USER_EMAIL)
+        browser.find_element(By.ID,"password").send_keys(USER_PASSWORD)
+        browser.find_element(By.ID, "login-button").click()
+        time.sleep(2)
+
+        #Confirm Package Addition
+        browser.find_element(By.LINK_TEXT, "Package Types").click()
+        time.sleep(1)
